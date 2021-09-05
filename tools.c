@@ -46,7 +46,7 @@ void tambahBuku (){
     scanf("%s", buku.availability);
     getchar();
 
-    FILE *fAppend = fopen("database.txt", "a");         // menambahkan input user ke dalam database.txt
+    FILE *fAppend = fopen("db.txt", "a");         // menambahkan input user ke dalam db.txt
     fprintf(fAppend, "%s#%d#%s#%d#%lf#%f#%lld#%s\n", buku.judul, buku.tahunTerbit, buku.penulis,
             buku.jumlahHalaman, buku.beratBuku, buku.ratingBuku, buku.ISBN,
             &buku.availability);

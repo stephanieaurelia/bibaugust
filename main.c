@@ -2,10 +2,10 @@
 #include <stdbool.h>
 #include <string.h>
 
-int line_count(char *db);
-void load_database(int n, char *db, buku daftar_buku[n]);
-void load_history(int n, char *db, riwayat daftar_riwayat[n]);
-int binary_search(buku arr[], char *keyword, int start, int end);
+int hitung_baris(char *db);
+int binary_search(buku daftar_buku[], char *keyword, int start, int end);
+void load_database(int n, char *filename, buku daftar_buku[n]);
+void load_history(int n, char *filename, riwayat daftar_riwayat[n]);
 void merge(int arr[], int left, int mid, int right);
 void split(int arr[], int left, int right);
 void sort(int arr[], int n);
@@ -53,7 +53,7 @@ int main(void)
         printf("| 6. Daftar buku                  |\n");
         printf("| 7. Exit                         |\n");
         printf("-----------------------------------\n");
-        printf("Masukan angka dari menu: ");
+        printf("Masukkan angka dari menu: ");
         scanf("%i", &input);
 
         switch(input)
@@ -65,7 +65,15 @@ int main(void)
             case 3:
                 break;
             case 4:
-                break;
+                char nama_buku[32];
+                int index = 0;
+                printf("Masukkan nama buku yang ingin dihapus: ");
+                scanf("%[^\n]\n", nama_buku);
+                if ((index = binary_search(daftar_buku, nama_buku, 0, jumlah_buku)) == -1)
+                {
+                    break;
+                }
+                hapus_buku()
             case 5:
                 break;
             case 6:
@@ -78,22 +86,22 @@ int main(void)
 int line_count(char *db)
 {
     FILE *fp = fopen(db, "r");
-    int c = 0;
-    char a;
-    while ((a = fgetc(fp)) != EOF)
+    int counter = 0;
+    char tmp;
+    while ((tmp = fgetc(fp)) != EOF)
     {
         if (a == '\n')
         {
-            c++;
+            counter++;
         }
     }
     fclose(fp);
     return c;
 }
 
-void load_database(int n, char *db, buku daftar_buku[n])
+void load_database(int n, char *filename, buku daftar_buku[n])
 {
-    FILE *fp = fopen(db, "r");
+    FILE *fp = fopen(filename, "r");
     for (int i = 0; i < n; i++)
     {
         fscanf(fp, "%[^#]#%i#%[^#]#%i#%lf#%f#%i\n", &daftar_buku[i].nama, &daftar_buku[i].tahun_terbit,
@@ -103,9 +111,9 @@ void load_database(int n, char *db, buku daftar_buku[n])
     fclose(fp);
 }
 
-void load_history(int n, char *db, riwayat daftar_riwayat[n])
+void load_history(int n, char *filename, riwayat daftar_riwayat[n])
 {
-    FILE *fp = fopen(db, "r");
+    FILE *fp = fopen(filename, "r");
     for (int i = 0; i < n; i++)
     {
         fscanf(fp, "%[^#]#%[^#]#%[^#]\n", &daftar_riwayat[i].tanggal, &daftar_riwayat[i].nama_buku, &daftar_riwayat[i].nama_peminjam);
@@ -113,13 +121,13 @@ void load_history(int n, char *db, riwayat daftar_riwayat[n])
     fclose(fp);
 }
 
-int binary_search(buku arr[], char *keyword, int start, int end)
+int binary_search(buku daftar_buku[], char *keyword, int start, int end)
 {
-    int l = end - start + 1;
-    int idx = (l % 2) ? (start + l / 2) : (start + l / 2) - 1;
+    int length = end - start + 1;
+    int idx = (length % 2) ? (start + length / 2) : (start + length / 2) - 1;
     for (int i = start; i <= idx; i++)
     {
-        if (strcmp(arr[i].nama, keyword) == 0)
+        if (strcmp(daftar_buku[i].nama, keyword) == 0)
         {
             return i;
         }
@@ -128,7 +136,7 @@ int binary_search(buku arr[], char *keyword, int start, int end)
     {
         return -1;
     }
-    binary_search(arr, keyword, idx + 1, end);
+    binary_search(daftar_buku, keyword, idx + 1, end);
 }
 
 void merge(int arr[], int left, int mid, int right)

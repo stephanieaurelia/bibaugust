@@ -1,0 +1,4 @@
+The C Programming Language#1988#Dennis Ritchie#272#0.467#4.8#0
+C in a Nutshell: The Definitive Reference#2016#Peter Prinz#824#1.188#4.7#1
+Calculus#2016#1.188#4.7#2015#James Stewart#1392#2.68#4.4#0
+Learning Java: An Introduction to Real-World Programming with Java#2020#Marc Loy#0.816#518#4.1#1

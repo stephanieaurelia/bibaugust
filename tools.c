@@ -39,7 +39,7 @@ void tambahBuku (){
     getchar();
     scanf("%lf", &buku.beratBuku);
     getchar();
-	scanf("%f", &buku.ratingBuku);
+    scanf("%f", &buku.ratingBuku);
     getchar();
     scanf("%lld", &buku.ISBN);
     getchar();

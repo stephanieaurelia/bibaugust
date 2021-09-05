@@ -38,6 +38,18 @@ int main(void)
             case 2:
                 break;
             case 3:
+                puts("Masukkan data buku yang ingin Anda tambahkan ke dalam database!");
+		        puts("Dengan format:");
+		        puts("Judul Buku");
+		        puts("Tahun Terbit");
+		        puts("Nama Penulis");
+		        puts("Jumlah Halaman");
+		        puts("Berat Buku");
+		        puts("Rating Buku");
+		        puts("ISBN");
+		        puts("Dipinjam(True)/Tidak Dipinjam(False)");
+                tambahBuku();
+                puts("Buku Anda telah ditambahkan ke database kami!);
                 break;
             case 4:
                 printf("Masukkan nama buku yang ingin dihapus: ");

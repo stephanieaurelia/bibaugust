@@ -1,30 +1,43 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct buku
+typedef struct Buku
 {
-    char nama[32];
-    int tahun_terbit;
-    char penulis[32];
-    int jumlah_halaman;
-    double berat_buku;
+    char judul[128];
+    int tahunTerbit;
+    char penulis[64];
+    int halaman;
+    double berat;
+    long long int isbn;
     float rating;
     bool dipinjam;
-} buku;
+}
+Buku;
 
-typedef struct riwayat
+typedef struct Riwayat
 {
     char tanggal[32];
-    char nama_buku[32];
-    char nama_peminjam[32];
-} riwayat;
+    char judul[128];
+    char peminjam[64];
+}
+Riwayat;
 
-int hitung_baris(char *db);
-int binary_search(buku daftar_buku[], char *keyword, int start, int end);
-void load_database(int n, char *filename, buku daftar_buku[n]);
-void load_history(int n, char *filename, riwayat daftar_riwayat[n]);
-void merge(int arr[], int left, int mid, int right);
-void split(int arr[], int left, int right);
-void sort(int arr[], int n);
-void hapus_buku(int n, char *filename);
+// tools.c
+void cariBuku(Buku **daftarBuku, int jumlahBuku);
+void hapusBuku(Buku **daftarBuku, int *jumlahBuku);
+void tambahBuku(Buku **daftarBuku, int *jumlahBuku);
+
+// load.c
+int hitungBaris(char *filename);
+int binarySearch(Buku *daftarBuku, char *keyword, int start, int end);
+void loadDatabase(char *filename, Buku daftarBuku[], int n);
+void loadRiwayat(char *filename, Riwayat daftarRiwayat[], int n);
+void updateDatabase(char *filename, Buku **daftarBuku, int *jumlahBuku);
+void updateRiwayat(char *filename, Riwayat **daftarRiwayat, int *jumlahRiwayat);
+
+// sort.c
+void merge(Buku daftarBuku[], int left, int mid, int right);
+void split(Buku daftarBuku[], int left, int right);
+void sort(Buku daftarBuku[], int n);

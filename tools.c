@@ -1,69 +1,102 @@
 #include "main.h"
 
-void hapus_buku(int n, char *filename)
+void cariBuku(Buku **daftarBuku, int jumlahBuku)
 {
-    FILE *fp = fopen(filename, "r");
-    FILE *tmpfile = fopen("tmp", "w");
-    int i = 0;
-    char buffer[512];
-
-    while (fscanf(fp, "%[^\n]\n", buffer) != EOF)
+    for (int i = 0; i < jumlahBuku; i++)
     {
-        if (i != n)
-        {
-            fprintf(tmpfile, "%s\n", buffer);
-        }
-        i++;
+        printf("%s\n", (*daftarBuku)[i].judul);
     }
-struct bukuTambahan{
-    char judul[1000];
-    int tahunTerbit;
-    char penulis[500];
-    int jumlahHalaman;
-    double beratBuku;
-    float ratingBuku;
-    long long int ISBN;
-    char availability[10];
-};
-    
-void tambahBuku (){
-    struct bukuTambahan buku;
-
-    scanf("%[^\n]", buku.judul);
-    getchar();
-    scanf("%d", &buku.tahunTerbit);
-    getchar();
-    scanf("%[^\n]", &buku.penulis);
-    getchar();
-    scanf("%d", &buku.jumlahHalaman);
-    getchar();
-    scanf("%lf", &buku.beratBuku);
-    getchar();
-    scanf("%f", &buku.ratingBuku);
-    getchar();
-    scanf("%lld", &buku.ISBN);
-    getchar();
-    scanf("%s", buku.availability);
-    getchar();
-
-    FILE *fAppend = fopen("db.txt", "a");         // menambahkan input user ke dalam db.txt
-    fprintf(fAppend, "%s#%d#%s#%d#%lf#%f#%lld#%s\n", buku.judul, buku.tahunTerbit, buku.penulis,
-            buku.jumlahHalaman, buku.beratBuku, buku.ratingBuku, buku.ISBN,
-            &buku.availability);
-    fclose(fAppend);
 }
 
-    fclose(fp);
-    fclose(tmpfile);
+void hapusBuku(Buku **daftarBuku, int *jumlahBuku)
+{
+    int indexHapus;
+    char judul[128];
+    printf("Panjang buku: %i\n", *jumlahBuku);
+    printf("Masukkan nama buku yang ingin dihapus: ");
+    scanf("%[^\n]", judul);
+    getchar();
 
-    fp = fopen(filename, "w");
-    tmpfile = fopen("tmp", "r");
-
-    while (fscanf(tmpfile, "%[^\n]\n", buffer) != EOF)
+    if ((indexHapus = binarySearch(*daftarBuku, judul, 0, *jumlahBuku)) == -1)
     {
-        fprintf(fp, "%s\n", buffer);
+        printf("Buku tidak ditemukan!\n");
+        return;
     }
 
-    fclose(fp);
-    fclose(tmpfile);
+    FILE *dbFile = fopen("db.txt", "r");
+    FILE *tmpFile = fopen("tmp", "w");
+    int i = 0;
+    char buffer[256];
+
+    while (fscanf(dbFile, "%[^\n]\n", buffer) != EOF)
+    {
+        if (i == indexHapus)
+        {
+            i++;
+            continue;
+        }
+        fprintf(tmpFile, "%s\n", buffer);
+        i++;
+    }
+
+    fclose(dbFile);
+    fclose(tmpFile);
+
+    dbFile = fopen("db.txt", "w");
+    tmpFile = fopen("tmp", "r");
+
+    while (fscanf(tmpFile, "%[^\n]\n", buffer) != EOF)
+    {
+        fprintf(dbFile, "%s\n", buffer);
+    }
+
+    fclose(dbFile);
+    fclose(tmpFile);
+
+    updateDatabase("db.txt", daftarBuku, jumlahBuku);
+    printf("Buku berhasil dihapus");
+}
+
+void tambahBuku(Buku **daftarBuku, int *jumlahBuku)
+{
+    Buku bukuTambahan;
+
+    printf("Masukkan data buku yang ingin Anda tambahkan ke dalam database!\n");
+    printf("Judul Buku: ");
+    scanf("%[^\n]", bukuTambahan.judul);
+    getchar();
+    printf("Tahun Terbit: ");
+    scanf("%d", &bukuTambahan.tahunTerbit);
+    getchar();
+    printf("Nama Penulis: ");
+    scanf("%[^\n]", bukuTambahan.penulis);
+    getchar();
+    printf("Jumlah Halaman: ");
+    scanf("%d", &bukuTambahan.halaman);
+    getchar();
+    printf("Berat Buku: ");
+    scanf("%lf", &bukuTambahan.berat);
+    getchar();
+    printf("ISBN: ");
+    scanf("%lld", &bukuTambahan.isbn);
+    getchar();
+    printf("Rating Buku: ");
+    scanf("%f", &bukuTambahan.rating);
+    getchar();
+    printf("Dipinjam (Masukkan 1 = True, 0 = False): ");
+    scanf("%i", &bukuTambahan.dipinjam);
+    getchar();
+
+    // menambahkan input user ke dalam db.txt
+    FILE *dbFile = fopen("db.txt", "a+");
+    fprintf(dbFile, "%s#%d#%s#%d#%lf#%lld#%f#%i\n", bukuTambahan.judul,
+            bukuTambahan.tahunTerbit, bukuTambahan.penulis,
+            bukuTambahan.halaman, bukuTambahan.berat, bukuTambahan.isbn,
+            bukuTambahan.rating, bukuTambahan.dipinjam);
+
+    fclose(dbFile);
+    // update array
+    updateDatabase("db.txt", daftarBuku, jumlahBuku);
+
+    printf("Buku Anda telah ditambahkan ke database kami!\n");
 }

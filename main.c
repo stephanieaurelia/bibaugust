@@ -2,18 +2,27 @@
 
 int main(void)
 {
-    int jumlah_buku = hitung_baris("db.txt");
-    buku daftar_buku[jumlah_buku];
-    load_database(jumlah_buku, "db.txt", daftar_buku);
+    int jumlahBuku = hitungBaris("db.txt");
+    Buku *daftarBuku = malloc(jumlahBuku * sizeof(Buku));
 
-    int jumlah_riwayat = hitung_baris("history.txt");
-    riwayat daftar_riwayat[jumlah_riwayat];
-    load_history(jumlah_riwayat, "history.txt", daftar_riwayat);
+    if (daftarBuku == NULL)
+    {
+        fprintf(stderr, "Telah terjadi kesalahan!");
+    }
+
+    loadDatabase("db.txt", daftarBuku, jumlahBuku);
+
+    int jumlahRiwayat = hitungBaris("history.txt");
+    Riwayat *daftarRiwayat = malloc(jumlahRiwayat * sizeof(Riwayat));
+
+    if (daftarRiwayat == NULL)
+    {
+        fprintf(stderr, "Telah terjadi kesalahan!");
+    }
+
+    loadRiwayat("history.txt", daftarRiwayat, jumlahRiwayat);
 
     int input;
-    int index_hapus;
-    char nama_buku[32];    
-
     do
     {
         printf("-----------------------------------\n");
@@ -34,33 +43,15 @@ int main(void)
         switch(input)
         {
             case 1:
+                cariBuku(&daftarBuku, jumlahBuku);
                 break;
             case 2:
                 break;
             case 3:
-                puts("Masukkan data buku yang ingin Anda tambahkan ke dalam database!");
-		        puts("Dengan format:");
-		        puts("Judul Buku");
-		        puts("Tahun Terbit");
-		        puts("Nama Penulis");
-		        puts("Jumlah Halaman");
-		        puts("Berat Buku");
-		        puts("Rating Buku");
-		        puts("ISBN");
-		        puts("Dipinjam(True)/Tidak Dipinjam(False)");
-                tambahBuku();
-                puts("Buku Anda telah ditambahkan ke database kami!);
+                tambahBuku(&daftarBuku, &jumlahBuku);
                 break;
             case 4:
-                printf("Masukkan nama buku yang ingin dihapus: ");
-                scanf("%[^\n]", nama_buku);
-                getchar();                
-                if ((index_hapus = binary_search(daftar_buku, nama_buku, 0, jumlah_buku)) == -1)
-                {
-                    printf("Buku tidak ditemukan!\n");
-                    break;
-                }
-                hapus_buku(index_hapus, "db.txt");
+                hapusBuku(&daftarBuku, &jumlahBuku);
                 break;
             case 5:
                 break;
@@ -69,4 +60,7 @@ int main(void)
         }
     }
     while (input != 7);
+
+    free(daftarBuku);
+    free(daftarRiwayat);
 }

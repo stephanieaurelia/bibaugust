@@ -1,20 +1,20 @@
 #include "main.h"
 
-void merge(int arr[], int left, int mid, int right)
+void merge(Buku daftarBuku[], int left, int mid, int right)
 {
     int leftSize = mid - left + 1;
     int rightSize = right - mid;
 
-    int leftArr[leftSize];
-    int rightArr[rightSize];
+    Buku leftArr[leftSize];
+    Buku rightArr[rightSize];
 
     for(int i = 0; i < leftSize; i++)
     {
-        leftArr[i] = arr[i + left];
+        leftArr[i] = daftarBuku[i + left];
     }
     for(int i = 0; i < rightSize; i++)
     {
-        rightArr[i] = arr[i + mid + 1];
+        rightArr[i] = daftarBuku[i + mid + 1];
     }
 
     int idx = left;
@@ -23,15 +23,15 @@ void merge(int arr[], int left, int mid, int right)
 
     while(idxL < leftSize && idxR < rightSize)
     {
-        if(leftArr[idxL] < rightArr[idxR])
+        if(leftArr[idxL].judul[0] < rightArr[idxR].judul[0])
         {
-            arr[idx] = leftArr[idxL];
+            daftarBuku[idx] = leftArr[idxL];
             idx++;
             idxL++;
         }
         else
         {
-            arr[idx] = rightArr[idxR];
+            daftarBuku[idx] = rightArr[idxR];
             idx++;
             idxR++;
         }
@@ -39,34 +39,34 @@ void merge(int arr[], int left, int mid, int right)
 
     while(idxL < leftSize)
     {
-        arr[idx] = leftArr[idxL];
+        daftarBuku[idx] = leftArr[idxL];
         idx++;
         idxL++;
     }
 
     while(idxR < rightSize)
     {
-        arr[idx] = rightArr[idxR];
+        daftarBuku[idx] = rightArr[idxR];
         idx++;
         idxR++;
     }
 
 }
 
-void split(int arr[], int left, int right)
+void split(Buku daftarBuku[], int left, int right)
 {
     if(left >= right)
     {
         return;
     }
     int mid = (left + right) / 2;
-    split(arr, left, mid);
-    split(arr, mid + 1, right);
+    split(daftarBuku, left, mid);
+    split(daftarBuku, mid + 1, right);
 
-    merge(arr, left, mid, right);
+    merge(daftarBuku, left, mid, right);
 }
 
-void sort(int arr[], int n)
+void sort(Buku daftarBuku[], int n)
 {
-    split(arr, 0, n - 1);
+    split(daftarBuku, 0, n - 1);
 }

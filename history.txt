@@ -1,0 +1,2 @@
+20191012#C in a Nutshell: The Definitive Reference#Aldo
+20191015#Learning Java: An Introduction to Real-World Programming with Java#Bima

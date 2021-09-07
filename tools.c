@@ -100,3 +100,23 @@ void tambahBuku(Buku **daftarBuku, int *jumlahBuku)
 
     printf("Buku Anda telah ditambahkan ke database kami!\n");
 }
+
+
+struct History
+{
+	long long int tanggalPeminjaman;
+	char namaBuku [100];
+	char namaPeminjam[100];
+}
+
+void lihatRiwayat(){
+    FILE *fp = fopen("./history.txt", "r");
+    struct History hs;
+    while(fscanf(fp, "%lf#%[^#]%[^#]\n",hs.tanggalPeminjaman, hs.namaBuku, hs.namaPeminjam) != EOF)
+	{
+		printf("Tanggal Peminjaman\n", hs.tanggalPeminjaman);
+        printf("Nama Buku: %s\n", hs.namaBuku);
+        printf("Nama Peminjam: %s\n", hs.namaPeminjam);
+        
+    }
+}

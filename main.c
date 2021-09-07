@@ -4,6 +4,7 @@ int main(void)
 {
     int jumlahBuku = hitungBaris("db.txt");
     Buku *daftarBuku = malloc(jumlahBuku * sizeof(Buku));
+    Buku *daftarBukuUnsorted = malloc(jumlahBuku * sizeof(Buku));
 
     if (daftarBuku == NULL)
     {
@@ -11,6 +12,8 @@ int main(void)
     }
 
     loadDatabase("db.txt", daftarBuku, jumlahBuku);
+    loadDatabase("db.txt", daftarBukuUnsorted, jumlahBuku);
+    sort(daftarBuku, jumlahBuku);
 
     int jumlahRiwayat = hitungBaris("history.txt");
     Riwayat *daftarRiwayat = malloc(jumlahRiwayat * sizeof(Riwayat));
@@ -43,7 +46,6 @@ int main(void)
         switch(input)
         {
             case 1:
-                cariBuku(&daftarBuku, jumlahBuku);
                 break;
             case 2:
                 break;
@@ -51,9 +53,10 @@ int main(void)
                 tambahBuku(&daftarBuku, &jumlahBuku);
                 break;
             case 4:
-                hapusBuku(&daftarBuku, &jumlahBuku);
+                hapusBuku(&daftarBukuUnsorted, &jumlahBuku);
                 break;
             case 5:
+                lihatRiwayat(daftarRiwayat, jumlahRiwayat);
                 break;
             case 6:
                 break;

@@ -23,7 +23,7 @@ void merge(Buku daftarBuku[], int left, int mid, int right)
 
     while(idxL < leftSize && idxR < rightSize)
     {
-        if(leftArr[idxL].judul[0] < rightArr[idxR].judul[0])
+        if(strcmp(leftArr[idxL].judul, rightArr[idxR].judul) < 0)
         {
             daftarBuku[idx] = leftArr[idxL];
             idx++;
@@ -66,7 +66,7 @@ void split(Buku daftarBuku[], int left, int right)
     merge(daftarBuku, left, mid, right);
 }
 
-void sort(Buku daftarBuku[], int n)
+void sort(Buku *daftarBuku, int jumlahBuku)
 {
-    split(daftarBuku, 0, n - 1);
+    split(daftarBuku, 0, jumlahBuku - 1);
 }

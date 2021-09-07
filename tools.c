@@ -1,28 +1,18 @@
 #include "main.h"
 
-void cariBuku(Buku **daftarBuku, int jumlahBuku)
-{
-    for (int i = 0; i < jumlahBuku; i++)
-    {
-        printf("%s\n", (*daftarBuku)[i].judul);
-    }
-}
-
 void hapusBuku(Buku **daftarBuku, int *jumlahBuku)
 {
-    int indexHapus;
+    int indexHapus = 0;
     char judul[128];
-    printf("Panjang buku: %i\n", *jumlahBuku);
     printf("Masukkan nama buku yang ingin dihapus: ");
     scanf("%[^\n]", judul);
     getchar();
 
-    if ((indexHapus = binarySearch(*daftarBuku, judul, 0, *jumlahBuku)) == -1)
+    if ((indexHapus = binarySearch(*daftarBuku, judul, 0, *jumlahBuku - 1)) == -1)
     {
         printf("Buku tidak ditemukan!\n");
         return;
     }
-
     FILE *dbFile = fopen("db.txt", "r");
     FILE *tmpFile = fopen("tmp", "w");
     int i = 0;
@@ -54,7 +44,7 @@ void hapusBuku(Buku **daftarBuku, int *jumlahBuku)
     fclose(tmpFile);
 
     updateDatabase("db.txt", daftarBuku, jumlahBuku);
-    printf("Buku berhasil dihapus");
+    printf("Buku berhasil dihapus\n");
 }
 
 void tambahBuku(Buku **daftarBuku, int *jumlahBuku)
@@ -101,22 +91,12 @@ void tambahBuku(Buku **daftarBuku, int *jumlahBuku)
     printf("Buku Anda telah ditambahkan ke database kami!\n");
 }
 
-
-struct History
+void lihatRiwayat(Riwayat *daftarRiwayat, int jumlahRiwayat)
 {
-	long long int tanggalPeminjaman;
-	char namaBuku [100];
-	char namaPeminjam[100];
-}
-
-void lihatRiwayat(){
-    FILE *fp = fopen("./history.txt", "r");
-    struct History hs;
-    while(fscanf(fp, "%lf#%[^#]%[^#]\n",hs.tanggalPeminjaman, hs.namaBuku, hs.namaPeminjam) != EOF)
-	{
-		printf("Tanggal Peminjaman\n", hs.tanggalPeminjaman);
-        printf("Nama Buku: %s\n", hs.namaBuku);
-        printf("Nama Peminjam: %s\n", hs.namaPeminjam);
-        
+    for (int i = 0; i < jumlahRiwayat; i++)
+    {
+        printf("Tanggal: %s\n", daftarRiwayat[i].tanggal);
+        printf("Judul: %s\n", daftarRiwayat[i].judul);
+        printf("Peminjam: %s\n\n", daftarRiwayat[i].peminjam);
     }
 }

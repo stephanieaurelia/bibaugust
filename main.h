@@ -28,10 +28,11 @@ Riwayat;
 void cariBuku(Buku **daftarBuku, int jumlahBuku);
 void hapusBuku(Buku **daftarBuku, int *jumlahBuku);
 void tambahBuku(Buku **daftarBuku, int *jumlahBuku);
+void lihatRiwayat(Riwayat *daftarRiwayat, int jumlahRiwayat);
 
 // load.c
 int hitungBaris(char *filename);
-int binarySearch(Buku *daftarBuku, char *keyword, int start, int end);
+int binarySearch(Buku *daftarBuku, char *keyword, int min, int max);
 void loadDatabase(char *filename, Buku daftarBuku[], int n);
 void loadRiwayat(char *filename, Riwayat daftarRiwayat[], int n);
 void updateDatabase(char *filename, Buku **daftarBuku, int *jumlahBuku);

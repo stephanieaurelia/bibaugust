@@ -18,25 +18,22 @@ int hitungBaris(char *filename)
     return counter;
 }
 
-int binarySearch(Buku *daftarBuku, char *keyword, int start, int end)
+int binarySearch(Buku *daftarBuku, char *keyword, int min, int max)
 {
-    int length = end - start + 1;
-    int idx = (length % 2) ? (start + length / 2) : (start + length / 2) - 1;
-
-    for (int i = start; i <= idx; i++)
+    if (max >= min)
     {
-        if (strcmp(daftarBuku[i].judul, keyword) == 0)
+        int mid = (min + max) / 2;
+        if (strcmp(daftarBuku[mid].judul, keyword) == 0)
         {
-            return i;
+            return mid;
         }
+        if (strcmp(daftarBuku[mid].judul, keyword) < 0)
+        {
+            return binarySearch(daftarBuku, keyword, mid + 1, max);
+        }
+        return binarySearch(daftarBuku, keyword, min, mid - 1);
     }
-
-    if (start == end)
-    {
-        return -1;
-    }
-
-    binarySearch(daftarBuku, keyword, idx + 1, end);
+    return -1;
 }
 
 void loadDatabase(char *filename, Buku *daftarBuku, int n)
@@ -61,7 +58,7 @@ void loadRiwayat(char *filename, Riwayat *daftarRiwayat, int n)
 
     for (int i = 0; i < n; i++)
     {
-        fscanf(histFile, "%[^#]#%[^#]#%[^#]\n", daftarRiwayat[i].tanggal,
+        fscanf(histFile, "%[^#]#%[^#]#%[^\n]\n", daftarRiwayat[i].tanggal,
                 daftarRiwayat[i].judul,
                 daftarRiwayat[i].peminjam);
     }
